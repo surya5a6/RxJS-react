@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { Observable } from 'rxjs';
+
+const observable = Observable.create(function(observer) {
+  observer.next('Hello')
+});
 
 function App() {
+  const [items, setItem] = useState([])
+  
+  useEffect(() => {
+    var subscription = observable.subscribe((value) => {
+      console.log(value);
+      setItem( items => [...items, value])
+    })
+    return () => {
+      subscription.unsubscribe();
+    } 
+  },[]);
+
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {items.map( item => <li>{item}</li>)}
     </div>
-  );
+  )
 }
 
 export default App;
