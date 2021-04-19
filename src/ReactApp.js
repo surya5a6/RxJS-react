@@ -1,10 +1,15 @@
-import * as Helpers from './helpers';
+import { render, createElement, createTextElement } from "./utils";
+import "./styles.css";
 
-const textEle = {
-  type: 'TEXT_ELEMENT',
-  props: { nodeValue: 'Hello world'}
-}
+const React = { createElement };
+const textElement = createTextElement("Hello world");
 
-const container = document.getElementById('root');
 
-Helpers.render(textEle, container);
+const element = createElement("h1", undefined, textElement);
+
+const ele = <h1>Hello</h1>;
+
+const container = document.getElementById("root");
+
+render(element, container);
+render(ele, container);
