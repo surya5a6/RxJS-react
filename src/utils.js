@@ -38,6 +38,7 @@ export function createElement(type, props, ...children) {
 }
 
 // RENDER-AND-COMMIT
+// git commit
 const noop = () => {};
 export function performUnitOfWork(fiber, resetWipFiber = noop) {
   const isFunctionComponent = fiber.type instanceof Function;
