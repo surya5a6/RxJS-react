@@ -36,3 +36,25 @@ export function createElement(type, props, ...children) {
     }
   };
 }
+
+// RENDER-AND-COMMIT
+const noop = () => {};
+export function performUnitOfWork(fiber, resetWipFiber = noop) {
+  const isFunctionComponent = fiber.type instanceof Function;
+  if (isFunctionComponent) {
+    // it is either a function component... (so call it)
+    resetWipFiber(fiber);
+    const children = [fiber.type(fiber.props)];
+    reconcileChildren(fiber, children.flat());
+  } else {
+    // or a host component... (so createDom)
+    if (!fiber.dom) fiber.dom = createDom(fiber);
+    reconcileChildren(fiber, fiber.props.children.flat());
+  }
+  if (fiber.child) return fiber.child;
+  let nextFiber = fiber;
+  while (nextFiber) {
+    if (nextFiber.sibling) return nextFiber.sibling;
+    nextFiber = nextFiber.parent;
+  }
+}
